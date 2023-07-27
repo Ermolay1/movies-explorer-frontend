@@ -2,8 +2,8 @@ import './Profile.css';
 
 function Profile() {
     return (
-      <section className="profile">
-        <h2 className="profile__title">Привет, Виталий!</h2>
+      <main className="profile">
+        <h1 className="profile__title">Привет, Виталий!</h1>
         <form className="profile__form">
           <div className="profile__field">
             <label className="profile__label">Имя</label>
@@ -16,7 +16,7 @@ function Profile() {
           <button className="profile__button profile__button_submit hover-link" type="submit">Редактировать</button>
           <button className="profile__button profile__button_logout hover-link" type="submit">Выйти из аккаунта</button>
         </form>
-      </section>
+      </main>
     )
   }
   

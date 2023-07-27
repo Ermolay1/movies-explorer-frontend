@@ -1,8 +1,10 @@
 .navtab {
  background-color: #272727;
  height: 66px;
- margin-top: 290px;
+ margin-bottom: 0px;
+ margin-top: auto;
  width: 100%;
+ font-family: Inter, sans-serif;
 }
 
 .navtab__links {
@@ -25,18 +27,12 @@
   }
   
   @media screen and (max-width: 768px) {
-    .navtab {
-        margin-top: 300px;
-    }
     .navtab__links {
       margin: 8px auto 38px;
     }
   }
   
   @media screen and (max-width: 425px) {
-    .navtab {
-        margin-top: 300px;
-    }
     .navtab__links {
       max-width: 268px;
       margin: 0 auto 25px;

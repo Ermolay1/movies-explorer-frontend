@@ -4,9 +4,9 @@ import './Register.css';
 
 function Register() {
     return (
-      <section className="register">
+      <main className="register">
         <Logo />
-        <h2 className="register__title">Добро пожаловать!</h2>
+        <h1 className="register__title">Добро пожаловать!</h1>
         <form className="register__form">
           <div className="register__field">
             <label className="register__label">Имя</label>
@@ -28,7 +28,7 @@ function Register() {
             <Link to="/sign-in" className="register__login-link hover-link">Войти</Link>
           </p>
         </form>
-      </section>
+      </main>
     )
   }
   

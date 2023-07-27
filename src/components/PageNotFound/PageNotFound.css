@@ -1,6 +1,8 @@
 .error404 {
     text-align: center;
     color: #ffffff;
+    max-width: 1280px;
+    min-height: 700px;
   }
   
   .error404__title {

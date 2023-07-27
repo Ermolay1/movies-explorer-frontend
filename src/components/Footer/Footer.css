@@ -16,7 +16,7 @@
   }
   
   .footer__container {
-    margin: 20px 0;
+    margin: 22px 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -30,7 +30,7 @@
   }
   
   .footer__links {
-    width: 263px;
+    width: 203px;
     margin: 0;
     padding: 0;
     list-style: none;

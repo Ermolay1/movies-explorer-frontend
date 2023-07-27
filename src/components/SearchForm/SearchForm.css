@@ -36,13 +36,19 @@
   
   .search__button {
     padding: 13px 17px;
-    background: #3456F3;
-    color: white;
+    width: 44px;
+    height: 44px;
+    background-color: #3456F3;
+    color: #ffffff;
     border: none;
     border-radius: 3px;
     font-size: 12px;
     line-height: 1.5;
     font-weight: 500;
+    background-image: url(../../images/лупа.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
   }
   
   .search__checkbox-container {

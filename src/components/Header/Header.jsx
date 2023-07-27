@@ -17,7 +17,7 @@ function Header() {
       )}
       {
         // eslint-disable-next-line no-restricted-globals
-        location.pathname === '/movie' && (
+        location.pathname === '/movies' && (
           <header className='header'>
          <Logo />
          <Navigation />

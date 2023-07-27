@@ -42,10 +42,12 @@
   }
   
   .movie__button_saved:hover {
-    background-image: url(../../images/remove_save_image.jpg);
+    background-image: url(../../images/remove_save_image.svg);
     cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
   }
-  
+
   .movie__info {
     margin: 14px 14px 0;
     display: flex;

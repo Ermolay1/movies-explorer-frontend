@@ -21,7 +21,7 @@ function App() {
                <Footer />
              </> }>
            </Route> 
-           <Route path="/movie"
+           <Route path="/movies"
              element={<>
                <Header />
                <Movies />

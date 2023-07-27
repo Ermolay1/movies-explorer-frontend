@@ -1,11 +1,12 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts/fonts.css);
 
-.page {
+body {
   margin: 0 auto;
   font-family: 'Inter', sans-serif; 
   background-color: #202020;
 }
+
 
 .hover-link:hover {
   transition: opacity 0.3s ease-in;
@@ -14,6 +15,11 @@
 }
 
 .hover-button:hover {
+  transition: opacity 0.3s ease-in;
+  opacity: 0.8;
+  cursor: pointer;
+}
+.logo:hover {
   transition: opacity 0.3s ease-in;
   opacity: 0.8;
   cursor: pointer;

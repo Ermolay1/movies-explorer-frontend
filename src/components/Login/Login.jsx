@@ -4,9 +4,9 @@ import './Login.css';
 
 function Login() {
     return (
-      <section className="login">
+      <main className="login">
         <Logo />
-        <h2 className="login__title">Рады видеть!</h2>
+        <h1 className="login__title">Рады видеть!</h1>
         <form className="login__form">
           <div className="login__field">
             <label className="login__label">E-mail</label>
@@ -23,7 +23,7 @@ function Login() {
             <Link to="/sign-up" className="login__signup-link hover-link">Регистрация</Link>
           </p>
         </form>
-      </section>
+      </main>
     )
   }
   

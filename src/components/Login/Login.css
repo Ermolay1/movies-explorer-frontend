@@ -1,5 +1,6 @@
 .login {
     max-width: 396px;
+    min-height: 700px;
     margin: 70px auto;
     padding: 0 30px;
     background-color: #202020;
@@ -32,11 +33,11 @@
   }
   
   .login__input {
-    padding: 15px;
     font-size: 13px;
     line-height: 16px;
     border: none;
-    background: #F9F9F9;
+    background-color: #202020;
+    color: #ffffff;
     border-radius: 8px;
     overflow: hidden;
     text-overflow: ellipsis;

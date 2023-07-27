@@ -1,5 +1,5 @@
 .navigation {
-    margin: auto 0;
+    margin-right: 35px;
     display: flex;
     align-items: center;
   }
@@ -42,23 +42,13 @@
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    color: white;
+    background-color: #313131;
+    color: #ffffff;
     padding: 6px 10px;
-    border: 2px solid #AAAAAA;
     border-radius: 50px;
     font-size: 14px;
     line-height: 16px;
     font-weight: 500;
-  }
-  
-  .navigation__account-icon {
-    background-image: url(../../images/accound-icon.svg);
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 12px;
-    height: 14px;
-    margin-right: 7px;
   }
   
   .navigation__popup-button {
@@ -87,8 +77,9 @@
       flex-direction: column;
       position: fixed;
       right: 0;
+      margin-right: 0;
       z-index: 2;
-      background: white;
+      background-color: #202020;
     }
   
     .navigation__popup-button {
@@ -101,7 +92,7 @@
     }
   
     .navigation__popup-button_burger {
-      background-image: url(../../images/icon-menu-burger.svg);
+      background-image: url(../../images/burger2.svg);
       width: 44px;
       height: 44px;
     }
@@ -131,14 +122,16 @@
       display: flex;
       margin-top: 105px;
     }
-  
+    
     .navigation__account-button {
       margin: 0;
       position: absolute;
       bottom: 90px;
     }
   }
-  
+  :hover.hover-popup {
+    border-bottom: 1px solid #ffffff;
+  }
   @media screen and (max-width: 425px) {
     .navigation__link_unlogged {
       font-size: 10px;
