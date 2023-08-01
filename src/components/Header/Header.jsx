@@ -1,15 +1,15 @@
-import Logo from '../Logo/Logo'
-import  Navigation  from '../Navigation/Navigation'
-import './Header.css'
+import Logo from '../Logo/Logo';
+import  Navigation  from '../Navigation/Navigation';
+import './Header.css';
 
-;
 function Header() {
 
     return (
       <>
       {
-        // eslint-disable-next-line no-restricted-globals
-        location.pathname === '/' && (
+      
+          // eslint-disable-next-line no-restricted-globals
+          location.pathname === '/' && (
       <header className='header && header_color'>
          <Logo />
          <Navigation />
@@ -32,7 +32,7 @@ function Header() {
          <Navigation />
       </header>
         )
-      }
+        }
       {
         // eslint-disable-next-line no-restricted-globals
         location.pathname === '/profile' && (

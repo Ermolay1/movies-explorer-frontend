@@ -69,12 +69,12 @@
   
   .search__checkbox::after {
     content: '';
-    width: 8px;
-    height: 8px;
+    width: 15px;
+    height: 15px;
     border-radius: 100%;
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 2px;
+    
     background: white;
   }
   
@@ -91,7 +91,11 @@
     font-size: 12px;
     line-height: 1.5;
   }
-  
+  .search__checkbox:hover {
+    transition: opacity 0.3s ease-in;
+    opacity: 0.7;
+    cursor: pointer;
+  }
   @media screen and (max-width: 425px) {
     .search {
       padding: 0 4px;

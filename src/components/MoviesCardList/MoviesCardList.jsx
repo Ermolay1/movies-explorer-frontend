@@ -3,13 +3,21 @@ import './MoviesCardList.css';
 
 function MoviesCardList() {
     return (
-      <section className="movies-list">
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+      <section>
+        <ul className="movies-list">
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+          <MoviesCard />
+        </ul>
       </section>
     )
   }

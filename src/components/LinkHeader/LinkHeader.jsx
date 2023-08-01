@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 function Links() {
    return (
     <nav className="navigation">
-            <Link to="/signup" className="navigation__link navigation__link_unlogged hover-link">Регистрация</Link>
-            <Link to="/signin" className="navigation__link navigation__link_unlogged hover-button">Войти</Link>
+            <Link to="/signup" className="navigation__link navigation__link_register hover-link">Регистрация</Link>
+            <Link to="/signin" className="navigation__link navigation__link_register hover-button">Войти</Link>
     </nav>
    ) 
 }

@@ -12,7 +12,7 @@
   }
   
   .techs__title {
-    margin: 0 0 90px;
+    margin: 0 0 87px;
     font-size: 22px;
     line-height: 27px;
     font-weight: 400;
@@ -32,15 +32,17 @@
   
   .techs__description {
     margin: 0 auto;
-    max-width: 460px;
+    max-width: 500px;
     text-align: center;
+    font-weight: 400;
     font-size: 14px;
-    line-height: 1.43;
+    line-height: 20px;
   }
   
   .techs__list {
     max-width: 690px;
-    margin: 100px auto 0;
+    margin-top: 100px;
+    margin-left: 200px;
     padding: 0;
     list-style: none;
     display: flex;

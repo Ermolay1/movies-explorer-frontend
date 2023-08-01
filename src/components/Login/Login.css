@@ -2,13 +2,13 @@
     max-width: 396px;
     min-height: 700px;
     margin: 70px auto;
-    padding: 0 30px;
+    padding: 5px 30px;
     background-color: #202020;
     color: #ffffff;
   }
   
   .login__title {
-    margin: 40px 0;
+    margin: 35px 0;
     font-size: 24px;
     line-height: 29px;
     font-weight: 500;
@@ -57,7 +57,7 @@
   
   .login__button {
     width: 100%;
-    margin: 169px 0 16px;
+    margin: 214px 0 16px;
     padding: 14px 0;
     background: #3456F3;
     color: white;
