@@ -14,7 +14,7 @@ function AboutProject() {
           <p className="about-project__duration-diagram about-project__duration-diagram_backend">1 неделя</p>
           <p className="about-project__duration-diagram about-project__duration-diagram_frontend">4 недели</p>
           <p className="about-project__duration-stage-name">Back-end</p>
-          <p className="about-project__duration-stage-name">Front-end</p>
+          <p className="about-project__duration-stage-name about-project__duration-stage_frontend ">Front-end</p>
         </div>
       </section>
     )

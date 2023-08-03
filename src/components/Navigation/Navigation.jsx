@@ -24,6 +24,12 @@ function Navigation() {
             <NavigationPopup/> 
           )
         }
+         {
+          // eslint-disable-next-line no-restricted-globals
+          location.pathname === '/profile' && (
+            <NavigationPopup/> 
+          )
+        }
       </>  
     )
 }

@@ -16,7 +16,7 @@ function Login() {
             </div>
             <div className="login__field">
               <label className="login__label">Пароль</label>
-              <input className="login__input" type="password" name="password" placeholder="Пароль" required minLength="6" />
+              <input className="login__input" type="password" name="password" placeholder="Пароль" required minLength="6" maxLength={20} />
               <span className="login__input-error"></span>
             </div>
             <button className="login__button hover-button" type="submit">Войти</button>

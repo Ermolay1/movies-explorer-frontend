@@ -38,10 +38,11 @@
     border: none;
     background-color: #202020;
     color: #ffffff;
-    border-radius: 8px;
+    padding-bottom: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border-bottom: 1px solid #424242; 
   }
   
   .login__input:focus {
@@ -59,7 +60,7 @@
     width: 100%;
     margin: 214px 0 16px;
     padding: 14px 0;
-    background: #3456F3;
+    background: #4285f4;
     color: white;
     border: none;
     border-radius: 3px;
@@ -79,7 +80,7 @@
   
   .login__signup-link {
     text-decoration: none;
-    color: #3456F3;
+    color: #4285f4;
   }
   
   @media screen and (max-width: 768px) {
@@ -90,7 +91,7 @@
   
   @media screen and (max-width: 425px) {
     .login {
-      margin: 56px auto 30px;
+      margin: 50px auto 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -98,10 +99,12 @@
   
     .login__title {
       margin: 50px 0 80px;
+      padding-left: 18%;
+      margin-right: auto;
     }
   
     .login__button {
-      margin: 257px 0 14px;
+      margin: 300px 0 14px;
       padding: 15px 0;
       font-size: 12px;
       line-height: 15px;
