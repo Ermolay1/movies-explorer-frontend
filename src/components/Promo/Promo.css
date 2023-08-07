@@ -38,7 +38,7 @@
     .promo__foto {
         width: 320px;
         height: 320px;
-        margin-top: 310px;
+        margin-top: 225px;
     }
   }
   @media screen and (max-width: 650px) {
@@ -62,6 +62,6 @@
     .promo__foto {
         width: 248px;
         height: 248px;
-        margin-top: 161px;
+        margin-top: 135px;
     }
   }

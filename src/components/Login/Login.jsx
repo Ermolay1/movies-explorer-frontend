@@ -20,7 +20,7 @@ function Login() {
               <span className="login__input-error"></span>
             </div>
             <button className="login__button hover-button" type="submit">Войти</button>
-            <p className="login__sign">Ещё не зарегистрированы?&nbsp;
+            <p className="login__sign">Ещё&nbsp;не&nbsp;зарегистрированы?&nbsp;
               <Link to="/signup" className="login__signup-link hover-link">Регистрация</Link>
             </p>
           </form>

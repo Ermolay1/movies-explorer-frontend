@@ -57,7 +57,10 @@
     display: none;
   }
   
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 775px) {
+    .navigation {
+      margin-right: 0;
+    }
     .overlay {
       position: fixed;
       top: 0;
@@ -135,7 +138,7 @@
   }
   @media screen and (max-width: 425px) {
     .navigation__link_navi {
-      font-size: 10px;
+      font-size: 18px;
       line-height: 1.6;
       margin-right: 14px;
     }
@@ -166,10 +169,18 @@
     }
   
     .navigation__link-main {
-      margin-top: 99px;
+      margin-top: 110px;
     }
   
     .navigation__account-button {
       bottom: 46px;
+    }
+    .navigation__link_register:last-child {
+      width: 15px;
+    }
+    .navigation__link_register {
+      font-size: 10px;
+      line-height: 10px;
+      margin-right: 20px;
     }
   }

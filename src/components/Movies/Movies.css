@@ -21,6 +21,9 @@
     .movies {
       padding: 0 30px;
     }
+    .movies__more-button {
+      margin-bottom: 75px;
+    }
   }
   
   @media screen and (max-width: 425px) {

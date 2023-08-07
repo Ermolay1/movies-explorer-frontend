@@ -47,6 +47,7 @@
   
   .login__input:focus {
     outline: none;
+    border-bottom: 2px solid #4285f4;
   }
   
   .login__input-error {
@@ -83,7 +84,7 @@
     color: #4285f4;
   }
   
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 800px) {
     .login {
       margin: 232px auto;
     }
@@ -104,7 +105,7 @@
     }
   
     .login__button {
-      margin: 300px 0 14px;
+      margin: 250px 0 14px;
       padding: 15px 0;
       font-size: 12px;
       line-height: 15px;

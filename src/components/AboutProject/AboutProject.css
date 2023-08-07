@@ -69,8 +69,12 @@
     font-weight: 500;
   }
   
-  @media screen and (max-width: 768px) {
-  
+  @media screen and (max-width: 780px) {
+    .about-project{
+      padding-left: 65px;
+      padding-right: 20px;
+      padding-bottom: 50px;
+    }
     .about-project__container {
       margin-bottom: 93px;
       gap: 22px 30px;
@@ -78,7 +82,7 @@
   
     .about-project__description {
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 18px;
     }
   }
   

@@ -1,8 +1,8 @@
 .footer {
     max-width: 1140px;
-    margin: 0 auto;
     padding: 0 30px 5px;
     background-color: #202020;
+    margin: auto;
   }
   
   .footer__title {
@@ -42,7 +42,6 @@
     color: #ffffff;
     text-decoration: none;
   }
-  
   @media screen and (max-width: 425px) {
     .footer {
       padding: 0 10px;

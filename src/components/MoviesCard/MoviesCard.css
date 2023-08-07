@@ -38,7 +38,7 @@
     width: 21px;
     height: 21px;
     position: absolute;
-    top: 14px;
+    top: 44px;
     right: 130px;
     background-image: url(../../images/save_image.svg);
     background-color: transparent;
@@ -91,6 +91,10 @@
     .movie__image {
       margin-bottom: 25px;
     }
+    .movie__button_saved {
+      top: 10px;
+      right: 10px;
+    }
   
     .movie__info {
       width: 100%;
@@ -108,11 +112,7 @@
       opacity: 1;
     }
   
-    .movie__button_saved {
-      top: 10px;
-      right: 10px;
-    }
-  
+    
     .movie{
       margin: o auto;
       min-height: auto;
