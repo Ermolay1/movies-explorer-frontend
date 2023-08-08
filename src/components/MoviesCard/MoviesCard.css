@@ -1,0 +1,127 @@
+.movie {
+    max-width: 360px;
+    width: 100%;
+    min-height: 231px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0 auto;
+    cursor: pointer;
+    color: #ffffff;
+  }
+  
+  .movie__image {
+    width: 100%;
+    min-height: 192px;
+    border-radius: 6px;
+  }
+  
+  .movie__button_save {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 10px;
+    line-height: 9px;
+    background-color: #313131;
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    padding: 6px 7px;
+    opacity: 0;
+  }
+  
+  .movie__button_save:hover {
+    opacity: 1;
+  }
+  
+  .movie__button_saved {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 44px;
+    right: 130px;
+    background-image: url(../../images/save_image.svg);
+    background-color: transparent;
+    border: none;
+  }
+  
+  .movie__button_saved:hover {
+    background-image: url(../../images/remove_save_image.svg);
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .movie__info {
+    margin-top: auto;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .movie__name {
+    padding-left: 14px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: left;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .movie__duration {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 400;
+    text-align: center;
+    width: 52px;
+    height: 18px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    color: #8B8B8B;
+    background-color: #2f2f2f;
+    border-radius: 3px;
+  }
+  
+  @media screen and (max-width: 800px) {
+    .movie__image {
+      margin-bottom: 25px;
+    }
+    .movie__button_saved {
+      top: 10px;
+      right: 10px;
+    }
+  
+    .movie__info {
+      width: 100%;
+      margin: 0;
+    }
+    .movie__name {
+      padding: 0;
+    }
+  }
+  
+  @media screen and (max-width: 445px) {
+    .movie__button_save {
+      top: 10px;
+      right: 10px;
+      opacity: 1;
+    }
+  
+    
+    .movie{
+      margin: o auto;
+      min-height: auto;
+    }
+    .movie__image {
+      margin-bottom: 16px;
+      min-height: 168px;
+    }
+    .movie__name {
+      font-size: 12px;
+    }
+  }
