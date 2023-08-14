@@ -16,7 +16,6 @@ class Auth {
 
   register(name, email, password) {
     return fetch(`${this._url}/signup`, {
-      mode: 'no-cors',
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({ name, email, password }),
