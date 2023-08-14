@@ -1,5 +1,5 @@
 const MOVIE_URL = 'https://api.nomoreparties.co/beatfilm-movies';
-const MAIN_API = 'http://localhost:3000/';
+const MAIN_API = 'api.movie.diplom.student.nomoredomains.work';//'http://localhost:3000/';
 
 
 export {
