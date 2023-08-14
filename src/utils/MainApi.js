@@ -1,87 +1,88 @@
+import { BASE_URL, BASE_MOVIES_URL } from "./const";
+
 class MainApi {
-  constructor(basePath, token) {
-    this._basePath = basePath;
-    this._token = token;
-  }
-  _getHeaders() {
-    return {
-      "Content-type": "application/json",
-      authorization: this._token,
-    };
-  }
-  _getJson(res) {
+  #onResponce (res) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+
+    return Promise.reject('Ошибка: ', res);
   }
 
-
-  getCurrentUser() {
-    const token = localStorage.getItem("jwt");
-    return fetch(`${this._basePath}/users/me `, {
-      headers: {
-      "Content-type": "application/json",
-      authorization: `Bearer ${token}`,
-      }
-    }).then(this._getJson);
+  constructor (config) {
+    this._url = config.url;
+    this._headers = config.headers;
   }
 
-  updateUser(name, email) {
-    return fetch(`${this._basePath}/users/me`, {
+  getUserInfo() {
+    return fetch(`${this._url}/users/me`, {
+      method: 'GET',
+      headers: this._headers
+    })
+    .then (this.#onResponce);
+  }
+
+  setUserInfo(name, email) {
+    return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email }),
-    }).then(res => this._getJson(res));
-  }
-
-  addNewMovie(data) {
-    return fetch(`${this._basePath}/movies`, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        country: data.country,
-        director: data.director,
-        duration: data.duration,
-        year: data.year,
-        description: data.description,
-        image: data.image,
-        trailerLink: data.trailerLink,
-        thumbnail: data.thumbnail,
-        movieId: data.id,
-        nameRU: data.nameRU,
-        nameEN: data.nameEN,
-      }),
-    }).then(res => this._getJson(res));
-  }
-
-  // удаление фильма из сохранённых
-  deleteMovie(data) {
-    return fetch(`${this._basePath}/movies/${data}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-    }).then(res => this._getJson(res));
+      headers: this._headers,
+      body: JSON.stringify({name, email})
+    })
+    .then (this.#onResponce);
   }
 
   getSavedMovies() {
-    return fetch(`${this._basePath}/movies`, {
+    return fetch(`${this._url}/movies`, {
       method: 'GET',
-      headers: {
-        authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-    }).then(res => this._getJson(res));
+      headers: this._headers
+    })
+    .then (this.#onResponce);
+  }
+
+  saveMovie(movie) {
+    return fetch(`${this._url}/movies`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: BASE_MOVIES_URL + movie.image.url,
+        trailerLink: movie.trailerLink,
+        thumbnail: BASE_MOVIES_URL + movie.image.formats.thumbnail.url,
+        movieId: movie.id,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+      })
+    })
+    .then (this.#onResponce);
+  }
+
+  deleteMovie(movieId) {
+    return fetch(`${this._url}/movies/${movieId}`, {
+      method: 'DELETE',
+      headers: this._headers
+    })
+    .then (this.#onResponce);
+  }
+
+  setToken(token) {
+    this._headers = {
+      ...this._headers,
+      'authorization': `Bearer ${token}`
+    }
   }
 }
 
+const token = localStorage.getItem("token");
+const mainApi = new MainApi ({
+  url: BASE_URL,
+  headers: {
+    "Content-type": "application/json",
+    'authorization': `Bearer ${token}`
+  }
+});
 
-const mainApi = new MainApi('https://api.movies.neydy.nomoreparties.sbs');
-
-  export default mainApi;
+export default mainApi

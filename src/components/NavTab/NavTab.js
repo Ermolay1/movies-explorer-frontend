@@ -1,20 +1,36 @@
-import { Link } from 'react-scroll';
+import "./NavTab.css";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import NavTabAccaunt from "./NavTabAccaunt/NavTabAccaunt";
 
-function NavTab(){
-    return(
-        <nav className="navtab">
-            <Link to="about" className="navtab__link" smooth={true} duration={600}>
-                О проекте
-            </Link>
-            <Link to="techs" className="navtab__link" smooth={true} duration={600}>
-                Технологии
-            </Link>
-            <Link to="about-me" className="navtab__link" smooth={true} duration={600}>
-                Студент
-            </Link>
+export default function NavTab(props) {
+  const { onClick } = props;
 
-        </nav>
-    );
+  return (
+    <div className="navtab">
+      <div className="navtab__desktop">
+        <div className="navtab__container">
+          <NavLink
+            to="/movies"
+            className={({ isActive }) =>
+              `navtab__link ${isActive ? "navtab__link_active" : ""}`
+            }
+          >
+            Фильмы
+          </NavLink>
+          <NavLink
+            to="/saved-movies"
+            className={({ isActive }) =>
+              `navtab__link ${isActive ? "navtab__link_active" : ""}`
+            }
+          >
+            Сохранённые фильмы
+          </NavLink>
+        </div>
+
+        <NavTabAccaunt />
+      </div>
+      <div className="navtab__mobile" onClick={onClick}></div>
+    </div>
+  );
 }
-
-export default NavTab;
