@@ -1,52 +1,41 @@
 import React from "react";
-import {useCallback} from "react";
-import {Link, useLocation} from "react-router-dom";
-import {formatImageUrl} from "../../utils/formatImageUrl";
-import {editTimeFormat} from "../../utils/editTimeFormat";
+import { useLocation } from "react-router-dom";
+import { transformDuration } from '../../utils/utils.js';
+function MoviesCard({ movie, saved, onLikeClick, onDeleteClick }) {
+    const location = useLocation();
 
-const MoviesCard = ({movie, onAddBookmark, onDeleteBookmark}) => {
-  const location = useLocation();
+    function handleLikeClick() {
+        onLikeClick(movie);
+      }
 
-  const handleAddBookmark = useCallback(() => {
-    onAddBookmark(movie);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movie]);
-
-  const handleDeleteBookmark = useCallback(() => {
-    onDeleteBookmark(movie);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movie]);
-
-  const bookmarkIcon = () => {
-    if (movie.bookmark) {
-      return (<button className="movies-card__add-bookmark movies-card__add-bookmark-active" type="button" onClick={handleDeleteBookmark}></button>)
-    } else {
-      return (<button className="movies-card__add-bookmark" type="button" onClick={handleAddBookmark}>Сохранить</button>)
-    };
-  };
-
-  const removeBookmarkIcon = () => {
-    return (<button className={`movies-card__add-bookmark movies-card__delete-bookmark`} type="button" onClick={handleDeleteBookmark}></button>)
-  };
-
-  const renderButton = () => {
-    if (location.pathname === "/movies") {
-      return bookmarkIcon();
-    } else {
-      return removeBookmarkIcon();
-    };
-  };
-
-  return (
-    <div className="movies-card">
-       <Link className="movies-card__link" to={movie.trailer || movie.trailerLink} target="_blank"><img className="movies-card__img" src={(movie.image.url && formatImageUrl(movie.image.url)) || movie.image} alt={movie.nameEN || movie.nameRU}></img></Link>
-       {renderButton()}
-    <div className="movies-card__content">
-      <h2 className="movies-card__title">{movie.nameEN || movie.nameRU}</h2>
-      <p className="movies-card__duration">{editTimeFormat(movie.duration)}</p>
-    </div>
-  </div>
-  );
+      function handleDeleteClick() {
+        onDeleteClick(movie);
+      }
+    
+    return(
+        <li className="card">
+            <a target="_blank" rel="noreferrer" href={movie.trailerLink}>
+                <img
+                className="card__image"
+                alt={movie.nameRU}
+                src={movie.image}
+                />
+            </a>
+            {(location.pathname !== '/saved-movies') ?
+                    (<button type="button" 
+                    className={`card__like ${saved  ? 'card__like_active' : ''}`}
+                    onClick={saved ? handleDeleteClick : handleLikeClick}
+                    >
+                    </button>) : (<button type="button" className="card__delete" onClick={handleDeleteClick}></button>)}
+            <div className="card__container">
+                <div className="card__info-container">
+                    <h2 className="card__text">{movie.nameRU}</h2>
+                    <p className="card__time">{transformDuration(movie.duration)}</p> 
+                </div>
+            
+            </div>
+        </li>
+    );
 };
 
 export default MoviesCard;

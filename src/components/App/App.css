@@ -1,19 +1,16 @@
-.app {
-  font-family: 'Inter', Arial, sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  display: flex;
-  flex-direction: column;
-  background-color: #202020;
-  max-width: 1280px;
-  min-width: 320px;
-  min-height: 700px;
-  min-height: 100vh;
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-}
-
-:root {
-  background-color: #202020;
+.App{
+    font-family: Inter,Arial,san-serif;
+    background-color: #202020;
+    color: #ffffff;
+    background-clip: border-box;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0 auto;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    
 }

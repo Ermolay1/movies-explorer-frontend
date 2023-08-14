@@ -1,23 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
-const Footer = () => {
-  return (
-    <footer className="footer">
-      <p className="footer__description">Учебный проект Яндекс.Практикум х BeatFilm.</p>
-        <div className="footer__container">
-          <p className="footer__copyright">© 2023</p>
-          <ul className="footer__links">
-            <li>
-              <Link className="footer__link" target="_blank" to="https://practicum.yandex.ru/">Яндекс.Практикум</Link>
-            </li>
-            <li>
-              <Link className="footer__link" target="_blank" to="https://github.com/Ermolay1?tab=repositories">Github</Link>
-            </li>
-          </ul>
-        </div>
-    </footer>
-  );
-};
+function Footer() {
+    return(
+        <footer className="footer">
+            <h3 className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</h3>
+            <div className="footer__container">
+                <p className="footer__author">&copy; 2023</p>
+                <div className="footer__list-link">
+                    <a
+                    href="https://practicum.yandex.ru"
+                    className="footer__link"
+                    target="_blank"
+                    rel="noreferrer">
+                    Яндекс.Практикум
+                    </a>
+                    <a
+                    href="https://github.com/neydyxd"
+                    className="footer__link"
+                    target="_blank"
+                    rel="noreferrer">
+                    Github
+                    </a>
+                </div>
+            </div>
+        </footer>
+    );
+}
 
 export default Footer;

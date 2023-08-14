@@ -1,51 +1,81 @@
-.movies-card-list {
-  padding-top: 80px;
-  border-top: 1px solid #424242;
+.cards{
+    width: 100%;
+    margin: 0 auto;
+    background-color: #202020;
+    padding-bottom: 85px;
 }
 
-.movies-card-list__cards {
-  list-style: none;
-  padding: 0 0 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 364px);
-  grid-template-rows: repeat(auto-fill, 271px);
-  grid-auto-rows: 257px;
-  column-gap: 24px;
-  row-gap: 30px;
-  justify-content: center;
-  width: 100%;
-  margin: 0;
+.cards__list{
+    border-top: 1px solid #424242;
+    max-width: 1140px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 364px);
+    gap: 35px 20px;
+    padding: 0;
+    padding-top: 77px;
+    margin: 0 auto;
+    justify-content: center;
 }
 
-.movies-card-list__none {
-  text-align: center;
-  color: #EE3465;
-  font-size: 14px;
-  font-weight: 400;
-  margin: 0;
+.cards__button{
+    width: 340px;
+    height: 36px;
+    margin: 0 auto;
+    display: block;
+    border: none;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 50px;
+    border-radius: 6px;
+    background: #2F2F2F;
+    color: #ffffff;
 }
 
 
-@media screen and (max-width: 768px) {
-  .movies-card-list__cards {
-    grid-template-columns: repeat(auto-fit, 339px);
-    grid-template-rows: repeat(auto-fill, 258px);
-    row-gap: 36px;
-    column-gap: 30px;
-    padding-bottom: 30px;
-  }
+.cards__button_hidden{
+    visibility: hidden;
 }
 
-@media screen and (max-width: 544px) {
-  .movies-card-list {
-    padding-top: 40px;
-  }
+.cards__button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}
 
-  .movies-card-list__cards {
-    grid-template-columns:repeat(auto-fill, 300px);
-    grid-template-rows: repeat(auto-fit, minmax(235px, 1fr));
-    grid-auto-rows: 235px;
-    row-gap: 16px;
-    padding-bottom: 30px;
-  }
+@media screen and (min-width: 768px) and (max-width:1279px) {
+    .cards{
+        border: none;
+    }
+
+    .cards__list {
+        grid-template-columns: repeat(2, 339px);
+        gap: 22px 30px;
+        max-width: 708px;
+      }
+    .cards__button{
+        display: block;
+        width: 708px;
+        margin-top: 60px;
+        padding: 0;
+        margin-bottom: 160px;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width:767px) {
+    .cards__list{
+        grid-template-columns: repeat(1, 300px);
+        gap: 30px;
+        max-width: 300px;
+    }
+
+    .cards__button{
+        display: block;
+        width: 300px;
+        margin-bottom: 165px;
+    }
+
+    .cards{
+        border: none;
+        padding-top: 40px;
+    }
 }

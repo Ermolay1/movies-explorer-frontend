@@ -1,24 +1,27 @@
-import React from 'react';
-import Promo from './Promo/Promo';
-import AboutProject from './AboutProject/AboutProject'
-import Techs from './Techs/Techs';
-import AboutMe from './AboutMe/AboutMe';
-import Portfolio from './Portfolio/Portfolio';
-import { Outlet } from 'react-router-dom';
+import AboutMe from '../AboutMe/AboutMe';
+import AboutProject from '../AboutProject/AboutProject';
+import Header from  '../Header/Header';
+import NavTab from '../NavTab/NavTab';
+import Promo from '../Promo/Promo';
+import Techs from '../Techs/Techs';
+import Portfolio from '../Portfolio/Portfolio';
+import Footer from '../Footer/Footer';
 
-const Main = () => {
-  return (
-  <>
-    <main className="main">
-      <Promo/>
-      <AboutProject/>
-      <Techs/>
-      <AboutMe/>
-      <Portfolio/>
-    </main>
-    <Outlet/>
-  </>
-  );
-};
+function Main({ loggedIn }) {
+    return(
+        <>
+            <Header loggedIn={loggedIn} />
+            <main>
+                <Promo />
+                <NavTab />
+                <AboutProject />
+                <Techs />
+                <AboutMe />
+                <Portfolio />
+            </main>
+            <Footer />
+        </>
+    );
+}
 
 export default Main;

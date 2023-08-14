@@ -1,43 +1,68 @@
-/* eslint-disable no-restricted-globals */
-import React from "react";
-import LogoLink from "./LogoLink/LogoLink";
-import Navigation from "../Navigation/Navigation";
-import MobileMenuButton from "../MobileMenuButton/MobileMenuButton";
+import React, { useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import logo from '../../images/logo.svg'
+import menu from '../../images/burger2.svg'
+import Navigation from '../Navigation/Navigation';
+function Header({loggedIn}) {
+    const [isClicked, setIsClicked] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    let location = useLocation();
 
-const Header = ({loggedIn, clickOpenMenu}) => {
+    function handleOpen() {
+        setIsClicked(true);
+    }
 
-  return (
-    <>
-    {
-      location.pathname === '/' && (
-    <header  className="header && header_color">
-      <LogoLink/>
-      <Navigation loggedIn={loggedIn}/>
-      {loggedIn && <MobileMenuButton clickOpenMenu={clickOpenMenu}/>}
-    </header>)}
-    { 
-      location.pathname === '/movies'&& (
-     <header  className="header ">
-      <LogoLink/>
-      <Navigation loggedIn={loggedIn}/>
-      {loggedIn && <MobileMenuButton clickOpenMenu={clickOpenMenu}/>}
-    </header>)}
-    { 
-      location.pathname === '/saved-movies'&& (
-     <header  className="header ">
-      <LogoLink/>
-      <Navigation loggedIn={loggedIn}/>
-      {loggedIn && <MobileMenuButton clickOpenMenu={clickOpenMenu}/>}
-    </header>)}
-    { 
-      location.pathname === '/profile'&& (
-     <header  className="header ">
-      <LogoLink/>
-      <Navigation loggedIn={loggedIn}/>
-      {loggedIn && <MobileMenuButton clickOpenMenu={clickOpenMenu}/>}
-    </header>)}
-    </>
-  );
-};
+    function handleClose() {
+        setIsClicked(false);
+    }
 
+    return(
+        <>
+        {(!loggedIn) ? (
+        <header className="header header_color">
+            <div className='header__container'>
+                <Link to="/" className="header__logo">
+                    <img src={logo} alt="логотип" />
+                </Link>
+                <div className='header__buttons'>
+                    <Link to="/sign-up" className='header__signup'>Регистрация</Link>
+                    <Link to="/sign-in" className='header__signin'>Войти</Link>
+                </div>
+            </div>
+        </header>
+        ) : (
+        <header className="header header-movies">
+            <div className='header__container'>
+                <Link to="/" className="header__logo">
+                    <img src={logo} alt="логотип" />
+                </Link>
+                <div className='header__buttons header-movies__buttons'>
+                    <NavLink exact to="/movies"
+                    className={({ isActive }) =>
+                    `button ${
+                      isActive ? "header__button_active" : "header__button"
+                    }`
+                  }
+                  >Фильмы</NavLink>
+                    <NavLink exact to="/saved-movies"
+                    className={({ isActive }) =>
+                    `button ${
+                      isActive ? "header__button_active" : "header__button"
+                    }`
+                  } 
+                  activeClassName='header__button_active'>Сохраненные фильмы</NavLink>
+                    <button onClick={handleOpen} className="header__menu-button">
+                        <img src={menu} alt="меню" />
+                    </button>
+                </div>
+                <Link to="/profile" className="header__account-button">
+                        <h3 className='header__account-title'>Аккаунт</h3>
+                </Link>
+            </div>
+            {isClicked ? <Navigation handleClose={handleClose} /> : ''}
+        </header>
+        )}
+        </>
+    );     
+}
 export default Header;

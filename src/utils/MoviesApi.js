@@ -1,32 +1,27 @@
-import { MOVIES_API_URI } from "../constants/apiURI";
+import { MOVIE_URL } from './constants';
 
-class Api {
-  constructor({ appUrl, headers }) {
-    this._appUrl = appUrl;
-    this._headers = headers;
-  };
-
-  _checkResponse(res) {
-    return res.ok ? res.json() : Promise.reject(res);
-  };
-
-  _request(url, config) {
-    return fetch(`${this._appUrl}${url}`, config)
-      .then((res) => this._checkResponse(res));
-  };
-
-  getMovies() {
-    return this._request('/beatfilm-movies', {
-      headers: this._headers
-    });
-  };
-};
-
-const MoviesApi = new Api({
-  appUrl: MOVIES_API_URI,
-  headers: {
-    'Content-Type': 'application/json',
+class MoviesApi {
+  constructor({ baseUrl }) {
+    this._baseUrl = baseUrl;
   }
+
+  // проверка статуса запроса
+  async _requestResult(res) {
+    const result = await res.json();
+    return res.ok ? result : Promise.reject(res);
+  }
+
+  // регистрация
+  getMovies() {
+    return fetch(`${this._baseUrl}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }).then((res) => this._requestResult(res));
+  }
+}
+
+const moviesApi = new MoviesApi({
+  baseUrl: MOVIE_URL,
 });
 
-export default MoviesApi;
+export default moviesApi;
