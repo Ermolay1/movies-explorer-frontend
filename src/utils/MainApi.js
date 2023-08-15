@@ -1,88 +1,97 @@
-import { BASE_URL, BASE_MOVIES_URL } from "./const";
-
 class MainApi {
-  #onResponce (res) {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject('Ошибка: ', res);
-  }
-
-  constructor (config) {
-    this._url = config.url;
+  constructor(config) {
+    this._address = config.address;
     this._headers = config.headers;
   }
 
-  getUserInfo() {
-    return fetch(`${this._url}/users/me`, {
-      method: 'GET',
-      headers: this._headers
-    })
-    .then (this.#onResponce);
+  _handleRes(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  setUserInfo(name, email) {
-    return fetch(`${this._url}/users/me`, {
+  registerUser({ name, email, password }) {
+    return fetch(`${this._address}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    }).then(this._handleRes);
+  }
+
+  loginUser({ email, password }) {
+    return fetch(`${this._address}/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    }).then(this._handleRes);
+  }
+
+  getToken(token) {
+    return fetch(`${this._address}/users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(this._handleRes);
+  }
+
+  getUserInfo() {
+    return fetch(`${this._address}/users/me`, {
+      method: 'GET',
+      headers: this._headers,
+    }).then(this._handleRes);
+  }
+
+  updateUserInfo(data) {
+    return fetch(`${this._address}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({name, email})
-    })
-    .then (this.#onResponce);
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+      }),
+    }).then(this._handleRes);
   }
 
-  getSavedMovies() {
-    return fetch(`${this._url}/movies`, {
+  getMovies() {
+    return fetch(`${this._address}/movies`, {
       method: 'GET',
-      headers: this._headers
-    })
-    .then (this.#onResponce);
+      headers: this._headers,
+    }).then(this._handleRes);
   }
 
-  saveMovie(movie) {
-    return fetch(`${this._url}/movies`, {
+  addMovies(data) {
+    return fetch(`${this._address}/movies`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify({
-        country: movie.country,
-        director: movie.director,
-        duration: movie.duration,
-        year: movie.year,
-        description: movie.description,
-        image: BASE_MOVIES_URL + movie.image.url,
-        trailerLink: movie.trailerLink,
-        thumbnail: BASE_MOVIES_URL + movie.image.formats.thumbnail.url,
-        movieId: movie.id,
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
-      })
-    })
-    .then (this.#onResponce);
+      body: JSON.stringify(data),
+    }).then(this._handleRes);
   }
 
-  deleteMovie(movieId) {
-    return fetch(`${this._url}/movies/${movieId}`, {
+  deleteMovies(movieId) {
+    return fetch(`${this._address}/movies/${movieId}`, {
       method: 'DELETE',
-      headers: this._headers
-    })
-    .then (this.#onResponce);
+      headers: this._headers,
+    }).then(this._handleRes);
   }
 
-  setToken(token) {
-    this._headers = {
-      ...this._headers,
-      'authorization': `Bearer ${token}`
-    }
+  updateToken() {
+    this._headers.Authorization = `Bearer ${localStorage.getItem('jwt')}`;
   }
 }
 
-const token = localStorage.getItem("token");
-const mainApi = new MainApi ({
-  url: BASE_URL,
+const mainApi = new MainApi({
+  address: 'https://api.movie.diplom.student.nomoredomains.work',
   headers: {
-    "Content-type": "application/json",
-    'authorization': `Bearer ${token}`
-  }
+    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+    'Content-Type': 'application/json',
+  },
 });
 
-export default mainApi
+export default mainApi;

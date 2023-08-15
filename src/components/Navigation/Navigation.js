@@ -1,52 +1,36 @@
-import "./Navigation.css";
-import React from "react";
-import { NavLink } from "react-router-dom";
-import NavTabAccaunt from "../NavTab/NavTabAccaunt/NavTabAccaunt";
+import './Navigation.css';
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
-export default function Navigation(props) {
-  const { isOpen, onClose } = props;
+const Navigation = () => {
+  const [showItems, setShowItems] = useState(false);
+
+  const handleToggleMenu = () => setShowItems(!showItems);
+
   return (
-    <section className={`popup ${isOpen && "popup_opened"}`}>
-      <div className="popup__container">
-        <button
-          type="button"
-          className="popup__close"
-          aria-label="закрыть меню"
-          onClick={onClose}
-        />
-        <nav className="popup__links">
-          <div className="popup__nav">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `popup__link ${isActive ? "popup__link_active" : ""}`
-              }
-              onClick={onClose}
-            >
-              Главная
-            </NavLink>
-            <NavLink
-              to="/movies"
-              className={({ isActive }) =>
-                `popup__link ${isActive ? "popup__link_active" : ""}`
-              }
-              onClick={onClose}
-            >
-              Фильмы
-            </NavLink>
-            <NavLink
-              to="/saved-movies"
-              className={({ isActive }) =>
-                `popup__link ${isActive ? "popup__link_active" : ""}`
-              }
-              onClick={onClose}
-            >
-              Сохраненные фильмы
-            </NavLink>
+    <nav className="navigation">
+      <button className="navigation__btn-menu" type="button" onClick={handleToggleMenu}></button>
+      <div className={`navigation__container ${showItems ? 'navigation__container_visible' : ''}`}>
+        <div className="navigation__sidebar">
+          <div className="navigation__list-container">
+            <button className="navigation__btn-close" type="button" onClick={handleToggleMenu}></button>
+            <ul className="navigation__list">
+              <li className="navigation__list-item navigation__list-item_type_main">
+                <Link to="/" className="navigation__link">Главная</Link>
+              </li>
+              <li className="navigation__list-item">
+                <NavLink to="/movies" className="navigation__link" activeClassName="navigation__link_active">Фильмы</NavLink>
+              </li>
+              <li className="navigation__list-item">
+                <NavLink to="/saved-movies" className="navigation__link" activeClassName="navigation__link_active">Сохранённые фильмы</NavLink>
+              </li>
+            </ul>
           </div>
-          <NavTabAccaunt onClick={onClose} />
-        </nav>
+          <Link to="/profile" className="navigation__link navigation__link_type_profile">Аккаунт</Link>
+        </div>
       </div>
-    </section>
+    </nav>
   );
-}
+};
+
+export default Navigation;

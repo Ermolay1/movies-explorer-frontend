@@ -1,102 +1,75 @@
-import "./Profile.css";
-import { React, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import Header from "../Header/Header";
-import useFormWithValidation from "../../hooks/useFormWithValidation";
+import './Profile.css';
+import { useState, useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import mainApi from '../../utils/MainApi';
 
-export default function Profile(props) {
-  const { notificationText, onUpdateUser, onLogOut, onNavigatorClick } = props;
-  const { values, setValues, handleChange, errors, isValid, setIsValid } =
-    useFormWithValidation();
-
+const Profile = ({ onSignOut, openPopup }) => {
   const currentUser = useContext(CurrentUserContext);
+  const [name, setName] = useState(currentUser.name);
+  const [lastName, setLastName] = useState(currentUser.name);
+  const [email, setEmail] = useState(currentUser.email);
+  const [lastEmail, setLastEmail] = useState(currentUser.email);
+  const [isVisibleButton, setVisibleButton] = useState(false);
 
-  useEffect(() => {
-    setValues({
-      ...values,
-      name: currentUser.name,
-      email: currentUser.email,
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+
+    mainApi.updateUserInfo({ name, email }).then(() => {
+      setVisibleButton(false);
+      setLastName(name);
+      setLastEmail(email);
+      openPopup('Данные успешно изменены!');
+    })
+    .catch((err) => {
+      openPopup(`Что-то пошло не так! ${err}`);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  };
 
-  useEffect(() => {
-    if (
-      values.name === currentUser.name &&
-      values.email === currentUser.email
-    ) {
-      setIsValid(false);
+  function handleNameChange(evt) {
+    const value = evt.target.value;
+    setName(value);
+
+    if (value !== lastName) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values, currentUser]);
+  }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleEmailChange(evt) {
+    const value = evt.target.value;
+    setEmail(value);
 
-    onUpdateUser(values.name, values.email);
+    if (value !== lastEmail) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
+    }
   }
 
   return (
-    <div className="profile">
-      <Header handleNavigatorClick={onNavigatorClick} />
-      <main className="profile__main">
-        <div className="profile__container">
-          <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-          <form
-            className="profile__form"
-            name="profile"
-            onSubmit={handleSubmit}
-            noValidate
-          >
-            <label className="profile__label">
-              Имя
-              <input
-                className="profile__input"
-                type="text"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                required
-                minLength="2"
-                maxLength="30"
-              />
-              <span className="profile__input-error">{errors.name}</span>
-            </label>
-            <label className="profile__label">
-              E-mail
-              <input
-                className="profile__input"
-                type="email"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                required
-              />
-              <span className="profile__input-error">{errors.email}</span>
-            </label>
-            <span className="profile__text">{notificationText}</span>
-            <button
-              type="submit"
-              className={`profile__submit-button ${
-                isValid ? "" : "profile__submit-button_disabled"
-              }`}
-              disabled={!isValid}
-            >
-              Редактировать
-            </button>
-            <Link to="/">
-              <button
-                type="button"
-                className="profile__exit-button"
-                onClick={onLogOut}
-              >
-                Выйти из аккаунта
-              </button>
-            </Link>
-          </form>
+    <section className="profile">
+      <form className="profile__form" onSubmit={handleSubmit}>
+        <h3 className="profile__greeting">Привет, {name}!</h3>
+        <div className="profile__inputs">
+          <p className="profile__text">Имя</p>
+          <div className="profile__area profile__area_type_name">
+            <input className="profile__settings" value={name} onChange={handleNameChange} />
+          </div>
+          <div className="profile__area profile__area_type_email">
+            <input className="profile__settings" value={email} onChange={handleEmailChange} />
+          </div>
+          <p className="profile__text">E-mail</p>
         </div>
-      </main>
-    </div>
+        <button className="profile__button" disabled={!isVisibleButton}>
+          Редактировать
+        </button>
+        <button className="profile__link" type="button" onClick={onSignOut}>
+          Выйти из аккаунта
+        </button>
+      </form>
+    </section>
   );
-}
+};
+
+export default Profile;

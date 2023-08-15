@@ -1,19 +1,20 @@
-import "./Header.css";
-import React from "react";
-import { Link } from "react-router-dom";
-import NavTab from "../NavTab/NavTab";
-import NavTabAuth from "../NavTab/NavTabAuth/NavTabAuth";
-import logo from "../../images/logo.svg";
+import './Header.css';
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../../images/logo.svg';
+import NavAuth from '../NavAuth/NavAuth';
+import Navigation from '../Navigation/Navigation';
 
-export default function Header(props) {
-  const { main, isLoggedIn=true, handleNavigatorClick } = props;
+const Header = ({ loggedIn, isLoading }) => {
+  const { pathname } = useLocation();
 
   return (
-    <header className={`header ${main ? "header_type_main" : ""}`}>
-      <Link to="/" className="header__logo">
-        <img src={logo} alt="Лого" />
+    <header className={`header ${pathname !== '/' ? '' : 'header_type_auth'}`}>
+      <Link to="/" className="header__link">
+        <img className="header__logo" src={logo} alt="Логотип Movies Explorer"></img>
       </Link>
-      {isLoggedIn ? <NavTab onClick={handleNavigatorClick} /> : <NavTabAuth />}
+      {isLoading ? '' : loggedIn ? <Navigation /> : <NavAuth />}
     </header>
   );
-}
+};
+
+export default Header;

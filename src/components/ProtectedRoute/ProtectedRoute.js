@@ -1,8 +1,12 @@
-import { Navigate } from "react-router-dom";
+import { Route, Redirect } from 'react-router-dom';
+import Preloader from '../Preloader/Preloader';
 
-export default function ProtectedRouteElement (props) {
+const ProtectedRoute = ({ component: Component, ...props }) => {
+  return (
+    <Route>
+      {() => (props.isLoading ? <Preloader /> : props.loggedIn ? <Component {...props} /> : <Redirect to="/" />)}
+    </Route>
+  );
+};
 
-    return (
-        props.isLoggedIn ? <props.component {...props} /> : <Navigate to='/' replace />
-    )
-}  
+export default ProtectedRoute;
