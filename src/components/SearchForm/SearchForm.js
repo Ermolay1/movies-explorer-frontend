@@ -1,47 +1,29 @@
-import './SearchForm.css';
-import { useEffect, useState } from 'react';
+import FilterCheckbox from "../FilterCheckBox/FilterCheckBox";
 
-const SearchForm = ({ handleGetMovies, filmsTumbler, filmsInputSearch, handleGetMoviesTumbler }) => {
-  const [inputSearch, setInputSearch] = useState('');
-  const [tumbler, setTumbler] = useState(false);
+function SearcForm({handleShortFilms, shortMovies, handleSubmit, handleChange, input, errorQuery }) {
+    
+    return(
+        <section className="search">
+            <form className="search__form" id="form" onSubmit={handleSubmit}>
+               <div className="search__field" >
+                <input
+                className="search__input"
+                name="search"
+                type="text"
+                placeholder="Фильм"
+                autoComplete="off"
+                defaultValue={input}
+                onChange={handleChange}
+                required
+                ></input>
+                <span className="search__error">{errorQuery}</span>
+                <button className="search__button" type="submit"></button>
+                </div>
+            </form>
+            
+            <FilterCheckbox shortMovies={shortMovies} handleShortFilms={handleShortFilms}/>
+        </section>
+    );
+}
 
-  function handleInputChange(evt) {
-    setInputSearch(evt.target.value);
-  }
-
-  function handleTumblerChange(evt) {
-    const newTumbler = !tumbler;
-    setTumbler(newTumbler);
-    handleGetMoviesTumbler(newTumbler);
-  }
-
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    handleGetMovies(inputSearch);
-  }
-
-  useEffect(() => {
-    setTumbler(filmsTumbler);
-    setInputSearch(filmsInputSearch);
-  }, [filmsTumbler, filmsInputSearch]);
-
-  return (
-    <form className="search">
-      <div className="search__container">
-        <input className="search__input" placeholder="Фильм" type="text" value={inputSearch || ''} onChange={handleInputChange} required />
-        <button type="submit" className="search__button" onClick={handleSubmit}>Найти</button>
-      </div>
-      <div className="search__toggle">
-        <p className="search__films">Короткометражки</p>
-        <label className="search__tumbler">
-
-          <input className="search__checkbox" type="checkbox" value={tumbler} checked={tumbler} onChange={handleTumblerChange} />
-          
-          <span className="search__slider" />
-        </label>
-      </div>
-    </form>
-  );
-};
-
-export default SearchForm;
+export default SearcForm

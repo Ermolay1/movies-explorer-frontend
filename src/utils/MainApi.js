@@ -1,97 +1,87 @@
 class MainApi {
-  constructor(config) {
-    this._address = config.address;
-    this._headers = config.headers;
+  constructor(basePath, token) {
+    this._basePath = basePath;
+    this._token = token;
   }
-
-  _handleRes(res) {
+  _getHeaders() {
+    return {
+      "Content-type": "application/json",
+      authorization: this._token,
+    };
+  }
+  _getJson(res) {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  registerUser({ name, email, password }) {
-    return fetch(`${this._address}/signup`, {
-      method: 'POST',
+
+  getCurrentUser() {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${this._basePath}/users/me `, {
       headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, password }),
-    }).then(this._handleRes);
+      "Content-type": "application/json",
+      authorization: `Bearer ${token}`,
+      }
+    }).then(this._getJson);
   }
 
-  loginUser({ email, password }) {
-    return fetch(`${this._address}/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    }).then(this._handleRes);
-  }
-
-  getToken(token) {
-    return fetch(`${this._address}/users/me`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }).then(this._handleRes);
-  }
-
-  getUserInfo() {
-    return fetch(`${this._address}/users/me`, {
-      method: 'GET',
-      headers: this._headers,
-    }).then(this._handleRes);
-  }
-
-  updateUserInfo(data) {
-    return fetch(`${this._address}/users/me`, {
+  updateUser(name, email) {
+    return fetch(`${this._basePath}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        email: data.email,
-      }),
-    }).then(this._handleRes);
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email }),
+    }).then(res => this._getJson(res));
   }
 
-  getMovies() {
-    return fetch(`${this._address}/movies`, {
-      method: 'GET',
-      headers: this._headers,
-    }).then(this._handleRes);
-  }
-
-  addMovies(data) {
-    return fetch(`${this._address}/movies`, {
+  addNewMovie(data) {
+    return fetch(`${this._basePath}/movies`, {
       method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify(data),
-    }).then(this._handleRes);
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        country: data.country,
+        director: data.director,
+        duration: data.duration,
+        year: data.year,
+        description: data.description,
+        image: data.image,
+        trailerLink: data.trailerLink,
+        thumbnail: data.thumbnail,
+        movieId: data.id,
+        nameRU: data.nameRU,
+        nameEN: data.nameEN,
+      }),
+    }).then(res => this._getJson(res));
   }
 
-  deleteMovies(movieId) {
-    return fetch(`${this._address}/movies/${movieId}`, {
+  // удаление фильма из сохранённых
+  deleteMovie(data) {
+    return fetch(`${this._basePath}/movies/${data}`, {
       method: 'DELETE',
-      headers: this._headers,
-    }).then(this._handleRes);
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    }).then(res => this._getJson(res));
   }
 
-  updateToken() {
-    this._headers.Authorization = `Bearer ${localStorage.getItem('jwt')}`;
+  getSavedMovies() {
+    return fetch(`${this._basePath}/movies`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    }).then(res => this._getJson(res));
   }
 }
 
-const mainApi = new MainApi({
-  address: 'https://api.movie.diplom.student.nomoredomains.work',
-  headers: {
-    'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-    'Content-Type': 'application/json',
-  },
-});
 
-export default mainApi;
+const mainApi = new MainApi('https://api.movies.neydy.nomoreparties.sbs');
+
+  export default mainApi;
