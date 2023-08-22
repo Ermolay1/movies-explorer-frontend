@@ -1,28 +1,28 @@
-import './Footer.css';
-
-const Footer = () => {
-  return (
-    <footer className="footer">
-      <h3 className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</h3>
-      <div className="footer__container">
-        <p className="footer__copyright">&copy; 2022</p>
-
-        <nav className="footer__nav">
-          <ul className="footer__nav-list">
-            <li className="footer__nav-item">
-              <a className="footer__nav-link" href="https://practicum.yandex.ru/web/" target="_blank" rel="noreferrer">Яндекс.Практикум</a>
-            </li>
-            <li className="footer__nav-item">
-              <a className="footer__nav-link" href="https://github.com/ia-stepanov/" target="_blank" rel="noreferrer">Github</a>
-            </li>
-            <li className="footer__nav-item">
-              <a className="footer__nav-link" href="https://www.facebook.com/ia.stepanov/" target="_blank" rel="noreferrer">Facebook</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </footer>
-  );
-};
+function Footer() {
+    return(
+        <footer className="footer">
+            <h3 className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</h3>
+            <div className="footer__container">
+                <p className="footer__author">&copy; 2023</p>
+                <div className="footer__list-link">
+                    <a
+                    href="https://practicum.yandex.ru"
+                    className="footer__link"
+                    target="_blank"
+                    rel="noreferrer">
+                    Яндекс.Практикум
+                    </a>
+                    <a
+                    href="https://github.com/neydyxd"
+                    className="footer__link"
+                    target="_blank"
+                    rel="noreferrer">
+                    Github
+                    </a>
+                </div>
+            </div>
+        </footer>
+    );
+}
 
 export default Footer;

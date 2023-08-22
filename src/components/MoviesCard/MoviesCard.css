@@ -1,90 +1,150 @@
-.card {
-  padding: 0;
+.card{
+    width: 364px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0 auto;
+    cursor: pointer;
+    color: #ffffff;
 }
 
-.card__image {
-  width: 270px;
-  height: 151px;
+.card__image{
+    width: 100%;
+    height: 203px;
+    object-fit: cover;
+    border-radius: 6px 6px 0 0;
+    margin-bottom: 10px;
 }
 
-.card__element {
-  display: flex;
-  justify-content: space-between;
-  min-height: 44px;
-  margin: 10.8px 2px 0 0;
+.card__text{
+    padding-left: 14px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: left;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.card__title {
-  max-width: 220px;
-  margin: 0;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 16px;
+.card__info-container{
+    margin-top: auto;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.card__buttons {
-  margin: -2px 0 0;
+.card__like{
+    position: absolute;
+    top: 14px;
+    width: 60px;
+    right: 14px;
+    font-size: 10px;
+    line-height: 9px;
+    background-color: #313131;
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    padding: 6px 7px;
+    opacity: 0;
+    background-image: url(../../images/save_batton.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.card__like:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+.card__delete{
+    position: absolute;
+    top: 14px;
+    width: 20px;
+    height: 20px;
+    right: 14px;
+    font-size: 10px;
+    line-height: 9px;
+    border: none;background-color: #313131;
+    color: #ffffff;
+    border-radius: 50px;
+    padding: 6px 7px;
+    opacity: 1;
+    background-image: url(../../images/icon-close.svg);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.card__button {
-  height: 20px;
-  width: 20px;
-  padding: 0;
-  border: none;
-  border-radius: 36px;
-  transition: opacity .2s linear;
+.card__delete:hover{
+    opacity: 0.6;
+    cursor: pointer;
 }
 
-.card__button:hover {
-  opacity: .6;
-  cursor: pointer;
+
+.card__like_active{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 44px;
+    right: 130px;
+    background-image: url(../../images/save_image.svg);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    opacity: 1;
+}
+.card__like_active:hover{
+    opacity: 1;
 }
 
-.card__button_inactive {
-  background: #f9f9f9 url(../../images/icon-saved-inactive.svg) center no-repeat;
+.card__time{
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 400;
+    text-align: center;
+    width: 52px;
+    height: 18px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    color: #8B8B8B;
+    background-color: #2f2f2f;
+    border-radius: 3px;
 }
 
-.card__button_active {
-  background: #f9f9f9 url(../../images/icon-saved-active.svg) center no-repeat;
+@media screen and (min-width: 768px) and (max-width:1100px) {
+    .card{
+        width: 339px;
+    }
+    .card__like_active{
+        top: 10px;
+        right: 10px;
+    }
+    .card__image{
+        height: 190px;
+    }
 }
 
-.card__button_delete {
-  width: 16px;
-  height: 16px;
-}
+@media screen and (min-width: 320px) and (max-width:767px) {
+    .card{
+        width: 300px;
+    }
+    .card__like{
+        opacity: 1;
+    }
+    .card__like_active{
+        top: 10px;
+        right: 10px;
+    }
+    .card__image{
+        height: 168px;
+    }
 
-.card__button_delete:hover {
-  background: #f9f9f9 url(../../images/icon-delete.svg) center no-repeat;
-}
+    .card__time{
+        font-size: 10px;
+    }
 
-.card__duration {
-  margin: 0.4px 0 14.5px;
-  padding-top: 7px;
-  border-top: 1px solid #e8e8e8;
-  color: #a0a0a0;
-  font-size: 11px;
-  line-height: 13px;
-}
-
-@media screen and (max-width: 800px) {
-  .card__image {
-    width: 339px;
-    height: 190px;
-  }
-
-  .card__title {
-    max-width: 290px;
-  }
-}
-
-@media screen and (max-width: 540px) {
-  .card__title {
-    font-size: 12px;
-    line-height: 17px;
-  }
-
-  .card__image {
-    width: 300px;
-    height: 168px;
-  }
-}
+    .card__text{
+        font-size: 12px;
+    }
+};

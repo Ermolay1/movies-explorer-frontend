@@ -1,192 +1,171 @@
-import './Movies.css';
-import React, { useEffect, useState } from 'react';
-import SearchForm from '../SearchForm/SearchForm';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import SearcForm from '../SearchForm/SearchForm';
+import { useState, useContext, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader';
-import moviesApi from '../../utils/MoviesApi';
-import mainApi from '../../utils/MainApi.js';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import moviesApi from '../../utils/MoviesApi'
+import Preloader from '../Pleloader/Preloader';
+import { transformMovies, filterMovies, filterShortMovies } from '../../utils/utils.js';
+import useFormWithValidation from '../../hook/useFormWithValidation';
 
-const Movies = ({ openPopup }) => {
-  const [films, setFilms] = useState(null);
-  const [filmsSaved, setFilmsSaved] = useState(null);
-  const [preloader, setPreloader] = useState(false);
-  const [errorText, setErrorText] = useState('');
-  const [filmsTumbler, setFilmsTumbler] = useState(false);
-  const [filmsInputSearch, setFilmsInputSearch] = useState('');
-  const [MoviesCount, setMoviesCount] = useState([]);
-  const [filmsShowed, setFilmsShowed] = useState(null);
-  const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
-  const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
+function Movies({ setIsInfoTooltip, savedMoviesList, onLikeClick, onDeleteClick, loggedIn }) {
+    const location = useLocation()
+    const [shortMovies, setShortMovies] = useState(false);
+    const [initialMovies, setInitialMovies] = useState([]); 
+    const [filteredMovies, setFilteredMovies] = useState([]); 
+    const [NotFound, setNotFound] = useState(false); 
+    const [isAllMovies, setIsAllMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const currentUser = useContext(CurrentUserContext);
+    const { values, handleChange, isValid, setIsValid } = useFormWithValidation();
+    const [errorQuery, setErrorQuery] = useState('');
+    const input = values.search || ''
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      isValid ? handleSearchSubmit(values.search) : setErrorQuery('Нужно ввести ключевое слово.');
+  };
+  
+  useEffect(() => {
+      setErrorQuery(' ')
+  }, [isValid]);
 
   useEffect(() => {
-    setMoviesCount(getMoviesCount());
-    const handlerResize = () => setMoviesCount(getMoviesCount());
-    window.addEventListener('resize', handlerResize);
+      if (location.pathname === '/movies' && localStorage.getItem(`currentUser - movieSearch`)) {
+      const searchValue = localStorage.getItem(`currentUser - movieSearch`);
+      values.search = searchValue;
+      setIsValid(true);
+      }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
-    return () => {
-      window.removeEventListener('resize', handlerResize);
-    };
-  }, []);
-
-  function getMoviesCount() {
-    let countCards;
-    const clientWidth = document.documentElement.clientWidth;
-    const MoviesCountConfig = {
-      '1200': [12, 4],
-      '900': [9, 3],
-      '768': [8, 2],
-      '240': [5, 2],
-    };
-
-    Object.keys(MoviesCountConfig)
-      .sort((a, b) => a - b)
-      .forEach((key) => {
-        if (clientWidth > +key) {
-          countCards = MoviesCountConfig[key];
-        }
+  function handleSetFilteredMovies(movies, userQuery, shortMoviesCheckbox) {
+    const moviesList = filterMovies(movies, userQuery, shortMoviesCheckbox);
+    if (moviesList.length === 0) {
+      setNotFound(true);
+      setIsInfoTooltip({
+        isOpen: true,
+        successful: false,
+        text: 'Ничего не найдено.',
       });
-
-    return countCards;
-  }
-
-  function handleMore() {
-    const spliceFilms = films;
-    const newFilmsShowed = filmsShowed.concat(spliceFilms.splice(0, MoviesCount[1]));
-    setFilmsShowed(newFilmsShowed);
-    setFilms(spliceFilms);
-  }
-
-  async function handleGetMovies(inputSearch) {
-    setFilmsTumbler(false);
-    localStorage.setItem('filmsTumbler', false);
-
-    if (!inputSearch) {
-      setErrorText('Нужно ввести ключевое слово');
-      return false;
+    } else {
+      setNotFound(false);
     }
+    setInitialMovies(moviesList);
+    setFilteredMovies(
+      shortMoviesCheckbox ? filterShortMovies(moviesList) : moviesList
+    );
+    localStorage.setItem(
+      `currentUser - movies`,
+      JSON.stringify(moviesList)
+    );
+  }
 
-    setErrorText('');
-    setPreloader(true);
 
-    try {
-      const data = await moviesApi.getMovies();
-      let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-      localStorage.setItem('films', JSON.stringify(filterData));
-      localStorage.setItem('filmsInputSearch', inputSearch);
+  function handleSearchSubmit(inputValue) {
+    localStorage.setItem(`currentUser - movieSearch`, inputValue);
+    localStorage.setItem(`currentUser - shortMovies`, shortMovies);
+    console.log(shortMovies);
+    if (isAllMovies.length === 0)  {
+      moviesApi
+        .getMovies()
+        .then(movies => {
+          setIsAllMovies(movies);
+          handleSetFilteredMovies(
+            transformMovies(movies),
+            inputValue,
+            shortMovies
+          );
+            setIsLoading(true);     
+        })
+        .catch(() =>
+          setIsInfoTooltip({
+            isOpen: true,
+            successful: false,
+            text: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.',
+          })
+        )
+        .finally(() => setTimeout(function() {
+          setIsLoading(false);
+        }, 3000));
+    } else {
+      handleSetFilteredMovies(isAllMovies, inputValue, shortMovies);
+    }
+  }
 
-      const spliceData = filterData.splice(0, MoviesCount[0]);
-      setFilmsShowed(spliceData);
-      setFilms(filterData);
-      setFilmsShowedWithTumbler(spliceData);
-      setFilmsWithTumbler(filterData);
-    } catch (err) {
-      setErrorText(
-        'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+  function handleShortFilms() {
+    setShortMovies(!shortMovies);
+    if (!shortMovies) {
+      setFilteredMovies(filterShortMovies(initialMovies));
+    } else {
+      setFilteredMovies(initialMovies);
+    }
+    localStorage.setItem(`currentUser - shortMovies`, !shortMovies);
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem(`currentUser - shortMovies`) === 'true') {
+      setShortMovies(true);
+    } else {
+      setShortMovies(false);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (localStorage.getItem(`currentUser - movies`)) {
+      const movies = JSON.parse(
+        localStorage.getItem(`currentUser - movies`)
       );
-
-      setFilms([]);
-      localStorage.removeItem('films');
-      localStorage.removeItem('filmsTumbler');
-      localStorage.removeItem('filmsInputSearch');
-    } finally {
-      setPreloader(false);
-    }
-  }
-
-  async function handleGetMoviesTumbler(tumbler) {
-    let filterDataShowed = [];
-    let filterData = [];
-
-    if (tumbler) {
-      setFilmsShowedWithTumbler(filmsShowed);
-      setFilmsWithTumbler(films);
-      filterDataShowed = filmsShowed.filter(({ duration }) => duration <= 40);
-      filterData = films.filter(({ duration }) => duration <= 40);
-    } else {
-      filterDataShowed = filmsShowedWithTumbler;
-      filterData = filmsWithTumbler;
-    }
-
-    localStorage.setItem('films', JSON.stringify(filterDataShowed.concat(filterData)));
-    localStorage.setItem('filmsTumbler', tumbler);
-    setFilmsShowed(filterDataShowed);
-    setFilms(filterData);
-  }
-
-  async function savedMoviesToggle(film, favorite) {
-    if (favorite) {
-      const objFilm = {
-        image: 'https://api.nomoreparties.co' + film.image.url,
-        trailer: film.trailerLink,
-        thumbnail: 'https://api.nomoreparties.co' + film.image.url,
-        movieId: film.id,
-        country: film.country || 'Неизвестно',
-        director: film.director,
-        duration: film.duration,
-        year: film.year,
-        description: film.description,
-        nameRU: film.nameRU,
-        nameEN: film.nameEN,
-      };
-      try {
-        await mainApi.addMovies(objFilm);
-        const newSaved = await mainApi.getMovies();
-        setFilmsSaved(newSaved);
-      } catch (err) {
-        openPopup('Во время добавления фильма произошла ошибка.');
-      }
-    } else {
-      try {
-        await mainApi.deleteMovies(film._id);
-        const newSaved = await mainApi.getMovies();
-        setFilmsSaved(newSaved);
-      } catch (err) {
-        openPopup('Во время удаления фильма произошла ошибка.');
+      setInitialMovies(movies);
+      if (
+        localStorage.getItem(`currentUser - shortMovies`) === 'true'
+      ) {
+        setFilteredMovies(filterShortMovies(movies));
+      } else {
+        setFilteredMovies(movies);
       }
     }
-  }
+  }, [currentUser]);
+  
+ 
 
   useEffect(() => {
-    mainApi
-      .getMovies()
-      .then((data) => {
-        setFilmsSaved(data);
-      })
-      .catch((err) => {
-        openPopup(`Ошибка сервера ${err}`);
-      });
-
-    const localStorageFilms = localStorage.getItem('films');
-
-    if (localStorageFilms) {
-      const filterData = JSON.parse(localStorageFilms);
-      setFilmsShowed(filterData.splice(0, getMoviesCount()[0]));
-      setFilms(filterData);
-      setPreloader(false);
+    if (values.search !== undefined) {
+    handleSearchSubmit(values.search);
+    console.log(values.search);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shortMovies])
 
-    const localStorageFilmsTumbler = localStorage.getItem('filmsTumbler');
-    const localStorageFilmsInputSearch = localStorage.getItem('filmsInputSearch');
-
-    if (localStorageFilmsTumbler) {
-      setFilmsTumbler(localStorageFilmsTumbler === 'true');
-    }
-
-    if (localStorageFilmsInputSearch) {
-      setFilmsInputSearch(localStorageFilmsInputSearch);
-    }
-  }, [openPopup]);
-
-  return (
-    <div className="movies">
-      <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
-      {preloader && <Preloader />}
-      {errorText && <div className="movies__text-error">{errorText}</div>}
-      {!preloader && !errorText && films !== null && filmsSaved !== null && filmsShowed !== null && (
-        <MoviesCardList handleMore={handleMore} filmsRemains={films} films={filmsShowed} savedMoviesToggle={savedMoviesToggle} filmsSaved={filmsSaved} />
-      )}
-    </div>
-  );
-};
+  
+    
+  return(
+        <>
+            <Header loggedIn={loggedIn}/>
+            <main>
+                <SearcForm 
+                handleShortFilms={handleShortFilms}
+                shortMovies={shortMovies}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                input={input}
+                errorQuery={errorQuery}
+                />
+                {isLoading && <Preloader/>}
+                {!NotFound && (
+                <MoviesCardList
+                moviesList={filteredMovies}
+                savedMoviesList={savedMoviesList}
+                onLikeClick={onLikeClick}
+                onDeleteClick={onDeleteClick}
+                />
+                )}
+            </main>
+            <Footer />
+        </>
+    );
+}
 
 export default Movies;

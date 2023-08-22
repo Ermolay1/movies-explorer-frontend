@@ -1,36 +1,42 @@
-import './Navigation.css';
-import { useState } from 'react';
+import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-const Navigation = () => {
-  const [showItems, setShowItems] = useState(false);
-
-  const handleToggleMenu = () => setShowItems(!showItems);
-
+function Navigation({ handleClose }) {
   return (
-    <nav className="navigation">
-      <button className="navigation__btn-menu" type="button" onClick={handleToggleMenu}></button>
-      <div className={`navigation__container ${showItems ? 'navigation__container_visible' : ''}`}>
-        <div className="navigation__sidebar">
-          <div className="navigation__list-container">
-            <button className="navigation__btn-close" type="button" onClick={handleToggleMenu}></button>
-            <ul className="navigation__list">
-              <li className="navigation__list-item navigation__list-item_type_main">
-                <Link to="/" className="navigation__link">Главная</Link>
-              </li>
-              <li className="navigation__list-item">
-                <NavLink to="/movies" className="navigation__link" activeClassName="navigation__link_active">Фильмы</NavLink>
-              </li>
-              <li className="navigation__list-item">
-                <NavLink to="/saved-movies" className="navigation__link" activeClassName="navigation__link_active">Сохранённые фильмы</NavLink>
-              </li>
-            </ul>
-          </div>
-          <Link to="/profile" className="navigation__link navigation__link_type_profile">Аккаунт</Link>
-        </div>
+    <div className="navigation__overlay">
+      <div onClick={handleClose} className="navigation__container-empty"></div>
+      <div className="navigation__container">
+        <button className="navigation__close-button" onClick={handleClose}></button>
+        <nav className="navigation__nav">
+          <NavLink
+            exact
+            to="/"
+            onClick={handleClose}
+            className="navigation__link"
+            activeClassName="navigation__link_active">
+            Главная
+          </NavLink>
+          <NavLink
+            to="/movies"
+            onClick={handleClose}
+            className="navigation__link"
+            activeClassName="navigation__link_active">
+            Фильмы
+          </NavLink>
+          <NavLink
+            to="/saved-movies"
+            onClick={handleClose}
+            className="navigation__link"
+            activeClassName="navigation__link_active">
+            Сохранённые фильмы
+          </NavLink>
+        </nav>
+        <Link to="/profile" className="navigation__account-button">
+            <h3 className='navigation__account-title'>Аккаунт</h3>
+        </Link>
       </div>
-    </nav>
+    </div>
   );
-};
+}
 
 export default Navigation;

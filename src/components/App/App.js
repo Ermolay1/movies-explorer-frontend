@@ -1,167 +1,289 @@
-import './App.css';
-import React, { useState, useEffect } from 'react';
-import { Route, Switch, useLocation, useHistory, withRouter, Redirect } from 'react-router-dom';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import Header from '../Header/Header';
+import { Route, Routes, useNavigate} from 'react-router-dom';
+import {useState, useEffect} from 'react';
 import Main from '../Main/Main';
-import Footer from '../Footer/Footer';
-import Movies from '../Movies/Movies';
-import SavedMovies from '../SavedMovies/SavedMovies';
+import './App.css';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
+import Movies from '../Movies/Movies';
 import Profile from '../Profile/Profile';
-import PageNotFound from '../PageNotFound/PageNotFound';
-import Popup from '../Popup/Popup';
+import SavedMovies from '../SavedMovies/SavedMovies';
+import NotFound from '../NotFound/NotFound';
+import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import Preloader from '../Preloader/Preloader';
-import MainApi from '../../utils/MainApi';
-import Token from '../../utils/token';
-
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import authApi from '../../utils/AuthApi'
+import InfoTooltip from '../../components/InfoTooltip/InfoTooltip'
 function App() {
-  const [isOpenPopup, setIsOpenPopup] = useState(false);
-  const [popupTitle, setPopupTitle] = useState('');
-  const [currentUser, setCurrentUser] = useState({});
+  const validator = require('validator');
+  const [currentUser, setCurrentUser] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const { pathname } = useLocation();
-  const history = useHistory();
+  const [isInfoTooltip, setIsInfoTooltip] = useState({
+    isOpen: false,
+    successful: true,
+    text: '',
+  });
+  const navigate = useNavigate();
+  const [savedMoviesList, setSavedMoviesList] = useState([]);
+
+  function closeInfoTooltip() {
+    setIsInfoTooltip({ ...isInfoTooltip, isOpen: false });
+  }
+  
+  function handleRegisterUser(name,email,password) {
+    if (validator.isEmail(email)){
+    authApi.registerUser(name, email, password)
+    .then((data) => {
+      if(data) {
+      setLoggedIn(true);
+      /*setCurrentUser({
+        name,
+        email,
+      });*/
+      localStorage.setItem("jwt", data.token);
+      handleAuthUser( email,password );
+    }
+    })
+    .catch((err) => {
+      setIsInfoTooltip({
+        isOpen: true,
+        successful: false,
+        text: 'Такой пользователь уже существует'
+      });
+    })
+  } else {
+    setIsInfoTooltip({
+      isOpen: true,
+      successful: false,
+      text: 'Введены не корректные данные'
+    });
+  }
+  }
+
+  function setUserData() {
+    const jwt = localStorage.getItem('jwt');
+    authApi.checkToken(jwt)
+    .then((user) => {
+      setCurrentUser({
+        email: user.email,
+        name: user.name
+      });
+    })
+  }
+
+  function handleAuthUser( email,password) {
+    authApi.loginUser(email, password)
+    .then((res) => {
+      localStorage.setItem('jwt', res.token)
+      setLoggedIn(true)
+      setTimeout(() => {navigate('/movies')}, 200)
+      setIsInfoTooltip({
+        isOpen: true,
+        successful: true,
+        text: 'Добро пожаловать!',
+      });
+      setUserData();
+      }
+      )
+      .catch(err =>
+        setIsInfoTooltip({
+          isOpen: true,
+          successful: false,
+          text: "Вы ввели не правильный логин или пароль",
+        })
+      )
+  }
+  
+  function handleSignOut() {
+    setCurrentUser({});
+    setLoggedIn(false);
+    localStorage.clear();
+  }
+  
+  function handleProfile({ name, email }) {
+    mainApi
+      .updateUser(name, email)
+      .then(newUserData => {
+        setCurrentUser(newUserData);
+        setIsInfoTooltip({
+          isOpen: true,
+          successful: true,
+          text: 'Ваши данные обновлены!',
+        });
+      })
+      .catch(err =>
+        setIsInfoTooltip({
+          isOpen: true,
+          successful: false,
+          text: err,
+        })
+      )
+  }
+
+  function handleSaveMovie(movie) {
+    console.log(movie);
+    mainApi
+      .addNewMovie(movie)
+      .then(newMovie => setSavedMoviesList([newMovie, ...savedMoviesList]))
+      .catch(err =>
+        setIsInfoTooltip({
+          isOpen: true,
+          successful: false,
+          text: err,
+        })
+      );
+  }
+
+  function handleDeleteMovie(movie) {
+    const savedMovie = savedMoviesList.find(
+      (item) => item.movieId === movie.id || item.movieId === movie.movieId
+    );
+    mainApi
+      .deleteMovie(savedMovie._id)
+      .then(() => {
+        const newMoviesList = savedMoviesList.filter(m => {
+          if (movie.id === m.movieId || movie.movieId === m.movieId) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        setSavedMoviesList(newMoviesList);
+      })
+      .catch(err =>
+        setIsInfoTooltip({
+          isOpen: true,
+          successful: false,
+          text: err,
+        })
+      );
+  }
 
   useEffect(() => {
-    getUserInfo();
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      authApi
+        .checkToken(jwt)
+        .then((user) => {
+          if (user) {
+            setLoggedIn(true);
+            setCurrentUser({
+              email: user.email,
+              name: user.name
+            });
+            navigate("/movies", { replace: true });
+          }
+        })
+        .catch(err =>
+          setIsInfoTooltip({
+            isOpen: true,
+            successful: false,
+            text: err,
+          })
+        )
+    } else {
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function getUserInfo() {
-    MainApi.getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-        setLoggedIn(true);
+  /*useEffect(() => {
+    mainApi
+      .getCurrentUser()
+      .then((user) => {
+        setCurrentUser({
+          email: user.email,
+          name: user.name
+        });
       })
-      .catch((err) => {
-        console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
+      .catch(err =>
+        setIsInfoTooltip({
+          isOpen: true,
+          successful: false,
+          text: err,
+        })
+      )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);*/
 
-  function onRegister(formData) {
-    MainApi.registerUser(formData)
-      .then((res) => {
-        if (res._id) {
-          setPopupTitle('Вы успешно зарегистрировались!');
-          setIsOpenPopup(true);
-          onLogin(formData);
-        }
-      })
-      .catch((err) => {
-        setPopupTitle('Что-то пошло не так! Ошибка регистрации.');
-        setIsOpenPopup(true);
-      });
-  }
+  useEffect(() => {
+    if (loggedIn && currentUser) {
+      mainApi
+        .getSavedMovies()
+        .then(data => {
+          setSavedMoviesList(data.reverse());
+        })
+        .catch(err =>
+          setIsInfoTooltip({
+            isOpen: true,
+            successful: false,
+            text: err,
+          })
+        );
+    }
+  }, [currentUser, loggedIn]);
 
-  function onLogin(formData) {
-    MainApi.loginUser(formData)
-      .then(({ token }) => {
-        if (token) {
-          Token.saveToken(token);
-          MainApi.updateToken();
-          setLoggedIn(true);
-          getUserInfo();
-          history.push('/movies');
-        }
-      })
-      .catch((err) => {
-        setPopupTitle('Что-то пошло не так! Ошибка авторизации.');
-        setIsOpenPopup(true);
-      });
-  }
-
-  function openPopup(textError) {
-    setPopupTitle(textError);
-    setIsOpenPopup(true);
-  }
-
-  function closePopup() {
-    setIsOpenPopup(false);
-    setPopupTitle('');
-  }
-
-  function onSignOut() {
-    Token.removeToken();
-    setLoggedIn(false);
-    localStorage.removeItem('films');
-    localStorage.removeItem('filmsTumbler');
-    localStorage.removeItem('filmsInputSearch');
-    localStorage.removeItem('savedFilms');
-    localStorage.removeItem('savedFilmsTumbler');
-    localStorage.removeItem('savedFilmsInputSearch');
-  }
 
   return (
+  <div className='App'>
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="App">
-        {pathname === '/' || pathname === '/movies' || pathname === '/saved-movies' || pathname === '/profile' ?
-          <Header loggedIn={loggedIn} isLoading={isLoading}/> : ''}
+    <Routes>
+     <Route
+        path='/'
+        element={<Main />}
+      />
+      <Route
+        path='/sign-up'
+        element={<Register handleRegisterUser={handleRegisterUser} />}
+      />
+      <Route
+        path='/sign-in'
+        element={<Login handleAuthUser={handleAuthUser} />}
+      />
+      <Route
+        path='/movies'
+        element={<ProtectedRoute loggedIn={loggedIn}>
+          <Movies 
+          loggedIn={loggedIn}
+          savedMoviesList={savedMoviesList}
+          setIsInfoTooltip={setIsInfoTooltip}
+          onLikeClick={handleSaveMovie}
+          onDeleteClick={handleDeleteMovie}
 
-        <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
-
-          <ProtectedRoute
-            path="/movies"
-            loggedIn={loggedIn}
-            component={Movies}
-            isLoading={isLoading}
-            openPopup={openPopup}
           />
-
-          <ProtectedRoute
-            path="/saved-movies"
-            loggedIn={loggedIn}
-            component={SavedMovies}
-            isLoading={isLoading}
-            openPopup={openPopup}
+        </ProtectedRoute>}
+      />
+      <Route
+        path='/profile'
+        element={<ProtectedRoute loggedIn={loggedIn} >
+          <Profile
+          loggedIn={loggedIn}
+          handleProfile={handleProfile}
+          handleSignOut={handleSignOut}
           />
-
-          <ProtectedRoute
-            path="/profile"
-            loggedIn={loggedIn}
-            component={Profile}
-            isLoading={isLoading}
-            onSignOut={onSignOut}
-            openPopup={openPopup}
+        </ProtectedRoute>}
+      />
+      <Route
+        path='/saved-movies'
+        element={<ProtectedRoute loggedIn={loggedIn}>
+          <SavedMovies 
+          savedMoviesList={savedMoviesList}
+          onDeleteClick={handleDeleteMovie}
+          setIsInfoTooltip={setIsInfoTooltip}
+          loggedIn={loggedIn}
           />
-
-          <Route path="/signin">
-            {() =>
-              isLoading ? <Preloader /> : !loggedIn ? <Login onLogin={onLogin} /> : <Redirect to="/movies" />
-            }
-          </Route>
-
-          <Route path="/signup">
-            {() =>
-              isLoading ? (
-                <Preloader />
-              ) : !loggedIn ? (
-                <Register onRegister={onRegister} />
-              ) : (
-                <Redirect to="/movies" />
-              )
-            }
-          </Route>
-
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-
-        {pathname === '/' || pathname === '/movies' || pathname === '/saved-movies' ? <Footer /> : ''}
-
-        <Popup text={popupTitle} isOpen={isOpenPopup} onClose={closePopup} />
-      </div>
+        </ProtectedRoute>}
+      />
+      <Route
+        path="*"
+        element={<NotFound />}
+      />
+    </Routes>
+          <InfoTooltip
+            status={isInfoTooltip}
+            onClose={closeInfoTooltip}
+          />
     </CurrentUserContext.Provider>
+  </div>
   );
 }
 
-export default withRouter(App);
+export default App;

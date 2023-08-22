@@ -1,19 +1,27 @@
-import Promo from '../Promo/Promo';
-import AboutProject from '../AboutProject/AboutProject';
-import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
+import AboutProject from '../AboutProject/AboutProject';
+import NavTab from '../NavTab/NavTab';
+import Promo from '../Promo/Promo';
+import Techs from '../Techs/Techs';
 import Portfolio from '../Portfolio/Portfolio';
+import Footer from '../Footer/Footer';
+import HeaderMain from '../Header/HeaderMain/HeaderMain';
 
-const Main = () => {
-  return (
-    <main className="main">
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
-    </main>
-  );
-};
+function Main() {
+    return(
+        <>
+            <HeaderMain />
+            <main>
+                <Promo />
+                <NavTab />
+                <AboutProject />
+                <Techs />
+                <AboutMe />
+                <Portfolio />
+            </main>
+            <Footer />
+         </>   
+    );
+}
 
 export default Main;
