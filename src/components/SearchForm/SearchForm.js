@@ -1,6 +1,6 @@
 import FilterCheckbox from "../FilterCheckBox/FilterCheckBox";
 
-function SearcForm({handleShortFilms, shortMovies, handleSubmit, handleChange, input, errorQuery }) {
+function SearcForm({handleShortFilms, inputText, shortMovies, handleSubmit, handleChange, input, disabled }) {
     
     return(
         <section className="search">
@@ -10,14 +10,16 @@ function SearcForm({handleShortFilms, shortMovies, handleSubmit, handleChange, i
                 className="search__input"
                 name="search"
                 type="text"
+                value={inputText}
                 placeholder="Фильм"
                 autoComplete="off"
                 defaultValue={input}
                 onChange={handleChange}
+                disabled={disabled}
                 required
                 ></input>
-                <span className="search__error">{errorQuery}</span>
-                <button className="search__button" type="submit"></button>
+                <span className="search-erorr"></span>
+                <button className="search__button" type="submit" disabled={disabled}></button>
                 </div>
             </form>
             

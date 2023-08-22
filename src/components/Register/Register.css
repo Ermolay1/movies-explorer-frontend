@@ -48,13 +48,8 @@
     border-bottom: 1px solid #424242;
 }
 .form__input-error{
-    display: block;
-    width: 100%;
-    word-wrap: break-word;
-
     min-height: 12px;
     margin-top: 10px;
-
     color: #FF4062;
     font-size: 10px;
     font-weight: 400;
@@ -84,7 +79,10 @@
     color: white;
     font-weight: 500;
     font-size: 14px;
-
+    opacity: 1;
+}
+.form__button:disabled{
+   opacity: 0.4; 
 }
 
 .form__button_login{

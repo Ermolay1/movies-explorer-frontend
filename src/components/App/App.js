@@ -35,10 +35,11 @@ function App() {
     .then((data) => {
       if(data) {
       setLoggedIn(true);
-      setCurrentUser({
+      /*setCurrentUser({
         name,
         email,
-      });
+      });*/
+      localStorage.setItem("jwt", data.token);
       handleAuthUser( email,password );
     }
     })

@@ -7,7 +7,7 @@ import useFormWithValidation from '../../hook/useFormWithValidation';
 
 function Profile({ handleSignOut, handleProfile, loggedIn }){
 
-  const { values, handleChange, resetForm, isValid } = useFormWithValidation();
+  const { values, handleChange, resetForm, errors, isValid } = useFormWithValidation();
   const currentUser = useContext(CurrentUserContext);
 
   function handleSubmit(e) {
@@ -22,11 +22,7 @@ function Profile({ handleSignOut, handleProfile, loggedIn }){
     }
   }, [currentUser, resetForm]);
 
-  const requirementValidity = (!isValid || (currentUser.name === values.name && currentUser.email === values.email));
-
-
-
-    return(
+ return(
         <>
             <Header loggedIn={loggedIn} />
             <section className="profile">
@@ -47,7 +43,7 @@ function Profile({ handleSignOut, handleProfile, loggedIn }){
                         
                         />
                     </label>
-                    <div className="profile__border"></div>
+                    <span className="profile__erorr">{errors.name}</span>
                     <label className="profile__label">
                     E-mail
                         <input
@@ -58,12 +54,10 @@ function Profile({ handleSignOut, handleProfile, loggedIn }){
                         type="email"
                         required
                         />
-                    </label>
-                    {requirementValidity ? 
-                    (<p className="profile__button-save profile__button-save_disable" >Редактировать</p>) 
-                    : 
-                    (<button  className="profile__button-save" type="submit">Редактировать</button>)
-                  }
+                        </label>
+                        <span className="profile__erorr">{errors.email}</span> 
+                        <button className='profile__button-save' type='submit' disabled={!isValid} >Редактировать</button>
+                    
                 </form>
                 <button type="submit" className="profile__logout" onClick={handleSignOut}>
                         Выйти из аккаунта
@@ -71,6 +65,7 @@ function Profile({ handleSignOut, handleProfile, loggedIn }){
             </section>
         </>
     );
+    
 }
 
 export default Profile

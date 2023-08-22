@@ -43,6 +43,7 @@
   .profile__input {
     margin: 0;
     padding: 0;
+    width: 100%;
     background-color: #202020;
     color: #ffffff;
     width: 350px;
@@ -56,15 +57,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    
   }
   .profile__input:focus {
     outline: none;
     border-bottom: 2px solid #4285f4;
   }
   
-  .profile__border {
-    border-bottom: 1px solid #424242;
-    margin-bottom: 17px;
+  .profile__erorr {
+    min-height: 12px;
+    margin-top: 10px;
+    top: 5px;
+    color: #FF4062;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: normal;
   }
   
   .profile__button-save {
@@ -81,24 +88,12 @@
     color: #ffffff;
     cursor: pointer;
     text-align: center;
-    padding-top: 10px;
-    margin-bottom: auto;
-  }
-
-  .profile__button-save_disable{
-    cursor: default;
-    color: #ffffff;
-    margin-bottom: 0;
-  }
-  
- 
-  .profile__button-save:hover{
-    opacity: 0.6;
-  }
-  
-
-  .profile__button-save_disable:hover{
     opacity: 1;
+    
+  }
+
+  .profile__button-save:disabled{
+    opacity: 0.4;
   }
   
   .profile__logout {

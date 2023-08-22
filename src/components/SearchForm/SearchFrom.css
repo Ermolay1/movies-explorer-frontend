@@ -54,8 +54,11 @@
     background-repeat: no-repeat;
     background-position: center;
     position: relative;
+    opacity: 0.4;
   }
-
+  .search__button:disabled{
+    opacity: 1;
+  }
   .search__button:hover{
     opacity: 0.6;
     cursor: pointer;
