@@ -38,7 +38,6 @@
     outline: none;
     box-shadow: inset 0 0 2px #4285f4;
 }
-
 .search__button {
     background-image: url('../../images/fing.svg');
     padding: 13px 17px;
@@ -54,10 +53,10 @@
     background-repeat: no-repeat;
     background-position: center;
     position: relative;
-    opacity: 0.4;
+    opacity: 1;
   }
   .search__button:disabled{
-    opacity: 1;
+    opacity: 0.4;
   }
   .search__button:hover{
     opacity: 0.6;

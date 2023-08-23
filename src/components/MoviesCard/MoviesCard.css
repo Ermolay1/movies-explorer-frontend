@@ -8,7 +8,7 @@
     color: #ffffff;
 }
 
-.card__image{
+.card-image{
     width: 100%;
     height: 203px;
     object-fit: cover;
@@ -36,7 +36,7 @@
     align-items: center;
 }
 
-.card__like{
+.card-like{
     position: absolute;
     top: 14px;
     width: 60px;
@@ -53,9 +53,12 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-.card__like:hover {
+
+.card-link:hover + .card-like{
     opacity: 1;
-    cursor: pointer;
+}
+.card-like:hover{
+    opacity: 1;
 }
 .card__delete{
     position: absolute;
@@ -85,8 +88,8 @@
     width: 30px;
     height: 30px;
     position: absolute;
-    top: 44px;
-    right: 130px;
+    top: 14px;
+    right: 10px;
     background-image: url(../../images/save_image.svg);
     background-color: transparent;
     background-repeat: no-repeat;
