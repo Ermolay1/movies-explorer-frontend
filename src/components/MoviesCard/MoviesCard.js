@@ -14,16 +14,16 @@ function MoviesCard({ movie, saved, onLikeClick, onDeleteClick }) {
     
     return(
         <li className="card">
-            <a target="_blank" rel="noreferrer" href={movie.trailerLink}>
+            <a target="_blank" className="card-link" rel="noreferrer" href={movie.trailerLink}>
                 <img
-                className="card__image"
+                className="card-image"
                 alt={movie.nameRU}
                 src={movie.image}
                 />
             </a>
             {(location.pathname !== '/saved-movies') ?
                     (<button type="button" 
-                    className={`card__like ${saved  ? 'card__like_active' : ''}`}
+                    className={`card-like ${saved  ? 'card__like_active' : ''}`}
                     onClick={saved ? handleDeleteClick : handleLikeClick}
                     >
                     </button>) : (<button type="button" className="card__delete" onClick={handleDeleteClick}></button>)}

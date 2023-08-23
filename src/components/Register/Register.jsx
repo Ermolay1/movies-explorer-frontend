@@ -6,7 +6,7 @@ function Register({ handleRegisterUser }) {
    // const [name, setName] = useState("");
    // const [email, setEmail] = useState("");
     //const [password, setPassword] = useState("");
-    const { values, errors, isValid, handleChange } =useFormWithValidation();
+    const { values, errors, isValid, handleChange } = useFormWithValidation();
     
     /*function handleNameChange(evt) {
         setName(evt.target.value);

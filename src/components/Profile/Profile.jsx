@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import {useContext} from 'react';
 import Header from "../Header/Header";
 import CurrentUserContext from '../../contexts/CurrentUserContext';
@@ -9,7 +9,11 @@ function Profile({ handleSignOut, handleProfile, loggedIn }){
 
   const { values, handleChange, resetForm, errors, isValid } = useFormWithValidation();
   const currentUser = useContext(CurrentUserContext);
-
+  
+  
+  
+  
+  
   function handleSubmit(e) {
     e.preventDefault();
     handleProfile(values);
@@ -56,7 +60,7 @@ function Profile({ handleSignOut, handleProfile, loggedIn }){
                         />
                         </label>
                         <span className="profile__erorr">{errors.email}</span> 
-                        <button className='profile__button-save' type='submit' disabled={!isValid} >Редактировать</button>
+                        <button className='profile__button-save' type='submit' disabled={(!isValid  )} >Редактировать</button>
                     
                 </form>
                 <button type="submit" className="profile__logout" onClick={handleSignOut}>
